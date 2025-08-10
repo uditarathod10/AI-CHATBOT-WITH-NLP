@@ -1,0 +1,71 @@
+import spacy  # this line brings spacy library so we can use its tools to process english text
+
+# Load spaCy's English NLP model
+nlp = spacy.load("en_core_web_sm")  # loads spacy's small english model that knows about grammer ,words,their meaning
+
+# Define some example intents and responses
+# this dictionary tells chatbot what to say when it undersytans yout intent
+intent_responses = {
+    "greeting": ["Hello!", "Hi there!", "Hey! How can I help you?"],
+    "goodbye": ["Goodbye!", "See you later!", "Take care!"],
+    "name": ["I'm a chatbot created using spaCy.", "You can call me SpaCyBot!"],
+    "help": ["Sure, I can help. Ask me anything.", "What do you need help with?"],
+    "thanks": ["You're welcome!", "Glad to help!", "Anytime!"],
+    "food":["you can eat pizza"," fruit sald is healty as well as tasty"," ice cake is good option"]
+}
+
+# Keywords for simple intent recognition
+#
+intent_keywords = {
+    "greeting": ["hello", "hi", "hey"],
+    "goodbye": ["bye", "goodbye", "see you"],
+    "name": ["name", "who","you","identity"],
+    "help": ["help", "assist", "support"],
+    "thanks": ["thanks", "thank you"],
+    "food":["eat","hungry"," items"]
+}
+
+
+def get_intent(user_input):
+    doc = nlp(user_input.lower())
+    for token in doc:
+        for intent, keywords in intent_keywords.items():
+            if token.lemma_ in keywords:
+                return intent
+    return "unknown"
+
+"""
+this function takes  your message ,
+converts it to lower case
+pases it through spacy to break it into words and lemmatize them
+loops through each word and compares it with intent keywords,
+if it finds a match ,it returns intent,
+if it dosen't find anything,it returns unknown """
+
+def get_response(intent):
+    if intent in intent_responses:
+        return intent_responses[intent][0]
+    else:
+        return "I didn't understand "
+
+"""  this function looks at detected intent
+returns first response from that intent's list
+if intent isn't recognized .it gives a default reply: I didn't understand """
+
+
+def chatbot():
+    print(" TalkBot: Hello! Ask me anything. Type 'exit' to quit.")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ["exit", "quit"]:
+            print(" TalkBot: Goodbye!")
+            break
+        intent = get_intent(user_input)
+        response = get_response(intent)
+        print(f"TalkBot: {response}")
+
+
+if __name__ == "__main__":
+    chatbot()
+
+
