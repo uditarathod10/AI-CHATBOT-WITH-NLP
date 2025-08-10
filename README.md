@@ -40,3 +40,7 @@ Technical Requirements
 Python 3.x
 
 spaCy (en_core_web_sm model)
+
+OUTPUT
+
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/5509a27e-afeb-4505-909d-70fb12912cac" />
